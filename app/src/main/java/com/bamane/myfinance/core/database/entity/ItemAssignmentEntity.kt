@@ -1,7 +1,6 @@
 package com.bamane.myfinance.core.database.entity
 
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 import androidx.room.ForeignKey
 
 @Entity(
