@@ -45,12 +45,14 @@ import com.bamane.myfinance.core.utils.toCompactRupiah
 import com.bamane.myfinance.core.utils.toRupiah
 
 
-@Preview(showBackground = true)
 @Composable
 fun DashboardScreen(
-    viewModel: DashboardViewModel = viewModel(factory = DashboardViewModel.Factory)
+    viewModel: DashboardViewModel = viewModel(factory = DashboardViewModel.Factory),
+    onNavigateToFriends: () -> Unit,
+    onNavigateToAddBill: () -> Unit,
 ) {
 
+    val userName by viewModel.userName.collectAsState()
     val totalReceivable by viewModel.totalReceivable.collectAsState()
     val totalDebt by viewModel.totalDebt.collectAsState()
     val totalBalance by viewModel.totalBalance.collectAsState()
@@ -98,7 +100,7 @@ fun DashboardScreen(
                             fontSize = 14.sp,
                         )
                         Text(
-                            text = "Bama",
+                            text = userName,
                             color = Color.White,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
@@ -215,9 +217,9 @@ fun DashboardScreen(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            ActionCard(title = "Tambah", icon = Lucide.Plus, iconColor = Color(color = 0xFF3B82F6) , modifier = Modifier.weight(1f))
-            ActionCard(title = "Scan", icon = Lucide.Scan, iconColor = Color(color = 0xFF9333EA) , modifier = Modifier.weight(1f))
-            ActionCard(title = "Teman", icon = Lucide.Users, iconColor = Color(color = 0xFFEC4899) , modifier = Modifier.weight(1f))
+            ActionCard(title = "Tambah", icon = Lucide.Plus, iconColor = Color(color = 0xFF3B82F6) , modifier = Modifier.weight(1f), action = onNavigateToFriends)
+            ActionCard(title = "Scan", icon = Lucide.Scan, iconColor = Color(color = 0xFF9333EA) , modifier = Modifier.weight(1f), action = onNavigateToFriends)
+            ActionCard(title = "Teman", icon = Lucide.Users, iconColor = Color(color = 0xFFEC4899) , modifier = Modifier.weight(1f), action = onNavigateToFriends)
         }
         Spacer(modifier = Modifier.height(30.dp))
 
@@ -253,7 +255,8 @@ fun ActionCard(
     title: String,
     icon: ImageVector,
     iconColor: Color,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    action: () -> Unit
 ) {
     Card(
         modifier = modifier.height(90.dp),
@@ -267,7 +270,7 @@ fun ActionCard(
             modifier = Modifier
                 .fillMaxSize()
                 .clickable {
-                    println("Text diklik!")
+                    action()
                 }
                 .padding(12.dp),
             verticalArrangement = Arrangement.Center,
@@ -299,7 +302,7 @@ fun TransactionCard (
 ) {
     Card (
         modifier = Modifier
-            .clickable{
+            .clickable {
                 println("test")
             }
             .fillMaxWidth()
