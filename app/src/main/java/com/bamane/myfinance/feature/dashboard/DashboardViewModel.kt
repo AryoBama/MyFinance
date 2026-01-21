@@ -7,16 +7,27 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.bamane.myfinance.MyApplication
 import com.bamane.myfinance.core.data.FinanceRepository
+import com.bamane.myfinance.core.database.entity.PersonEntity
 import com.bamane.myfinance.core.model.BillPreviewModel
 import com.bamane.myfinance.feature.friend.FriendViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 const val BILL_LIMIT = 3
 class DashboardViewModel(private val repository: FinanceRepository): ViewModel() {
 
+    private val _userName = MutableStateFlow("User")
+    val userName: StateFlow<String> = _userName
+
+    init {
+        viewModelScope.launch {
+            _userName.value = repository.getMyProfile()?.name ?: "User"
+        }
+    }
     val totalReceivable: StateFlow<Double> = repository.totalReceivable
         .stateIn(
             scope = viewModelScope,
