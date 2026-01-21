@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                         contentColor = Color.Black
 
                     ) {
-                        DashboardScreen()
+                        MainScreen()
                     }
 
                 }
