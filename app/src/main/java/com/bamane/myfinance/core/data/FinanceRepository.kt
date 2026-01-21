@@ -20,8 +20,8 @@ class FinanceRepository(private val dao: FinanceDao) {
         dao.insertPerson(person)
     }
 
-    suspend fun getMyProfile() {
-        dao.getMyProfile()
+    suspend fun getMyProfile(): PersonEntity? {
+        return dao.getMyProfile();
     }
 
     suspend fun saveBill(bill: BillEntity, items: List<BillItemEntity>) {
